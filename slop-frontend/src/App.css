@@ -1,0 +1,31 @@
+#root {
+  max-width: none;
+  margin: 0;
+  padding: 1rem;
+  text-align: center;
+  background: white;
+  min-height: 100vh;
+}
+
+h1, h2 {
+  margin: 0.5rem 0;
+  color: #1f2937;
+}
+
+h1 {
+  font-size: 1.5rem;
+}
+
+h2 {
+  font-size: 1.1rem;
+}
+
+input[type="range"] {
+  cursor: pointer;
+}
+
+div > p {
+  margin: 0.5rem 0;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
