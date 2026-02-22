@@ -1,9 +1,7 @@
-from PIL import Image
-from PIL.ExifTags import TAGS
 import requests
-import sys
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 
 def save_image_from_url(url, file_name):
@@ -11,7 +9,7 @@ def save_image_from_url(url, file_name):
         response = requests.get(url, stream=True, timeout=10)
         response.raise_for_status()
     
-        tmp_dir = Path("scrapper/tmp")
+        tmp_dir = Path("backend/data")
         tmp_dir.mkdir(parents=True, exist_ok=True)
 
         with open(tmp_dir / file_name, "wb") as f:
@@ -25,57 +23,58 @@ def save_image_from_url(url, file_name):
 
 def delete_image(file_name):
     try:
-        os.remove(Path("scrapper/tmp") / file_name)
+        os.remove(Path("backend/data") / file_name)
         print(f"Image {file_name} deleted successfully")
     except OSError as e:
         print(f"Error deleting image {file_name}: {e}")
 
 
 def get_metadata_from_images(file_name):
-        try:
-            image = Image.open(f"scrapper/tmp/{file_name}")
-            image.verify()
-            
-            # Check if image is truly opened
-            if image.fp is None:
-                print(f"Error: Image file path is none")
-            
-            if image.close:
-                print(f"Error: Image file is closed")
-            
-            # Verify image has valid format
-            if not image.format:
-                print(f"Error: Image has invalid format: {file_name}")
-            
-            print(f"\n{'='*60}")
-            print(f"Image: {file_name}")
-            print(f"{'='*60}")
-            
-            exif_data = image.getexif()
-            if exif_data:
-                print(f"\n--- EXIF Data ({len(exif_data)} tags) ---")
-                for tagid in exif_data:
-                    tagname = TAGS.get(tagid, tagid)
-                    value = exif_data.get(tagid)
-                    
-                    if isinstance(value, bytes):
-                        value = value.decode()
-                    print(f"{tagname:25}: {value}")
+    load_dotenv()
+    EXIFTOOL_KEY = os.getenv("EXIFTOOL_API_KEY")
+    if not EXIFTOOL_KEY:
+        print("Error: EXIFTOOL_API_KEY not found in environment variables")
+        return
+    
+    path = Path("backend/data/images") / file_name
+    if not path.is_file():
+        print(f"Error: Image file '{file_name}' not found in 'backend/data'")
+        return
+
+    with open(path, "rb") as f:
+        response = requests.post(
+            "https://exiftools.com/api/v1/extract",
+            headers={"X-API-Key": EXIFTOOL_KEY},
+            files={"file": f}
+        )
+
+        result = response.json()
+
+        if not result.get("success"):
+            print(f"Error: {result.get('error')}")
+            return
+        
+        metadata = result.get("metadata", {})
+
+        print(f"\n{'='*60}")
+        print(f"Image: {file_name}")
+        print(f"{'='*60}")
+
+        for section, values in metadata.items():
+            if isinstance(values, dict):
+                print(f"\n--- {section} ---")
+                for key, value in values.items():
+                    print(f"{key:40}: {value}")
             else:
-                print("\n--- EXIF Data ---")
-                print("No EXIF data found")
-            
-            image.close()
-                
-        except Image.UnidentifiedImageError:
-            print(f"Unidentified image file: {file_name}")
-        except AssertionError:
-            print(f"Error: Image file corrupted or cannot be read: {file_name}")            
+                print(f"{section:40}: {values}")
+
+        return metadata
+
 
 def main():
     image_urls = []
     try:    
-        with open('scraped_image_url.txt', 'r') as file:
+        with open('backend/data/scraped_image_url.txt', 'r') as file:
             image_urls = file.read().splitlines()
     except FileNotFoundError:
         print("Error: 'scraped_image_urls.txt' not found")
@@ -85,7 +84,7 @@ def main():
             file_name = url.split("/")[-1].split("?")[0]
             save_image_from_url(url, file_name)
 
-            file_path = Path("scrapper/tmp") / file_name
+            file_path = Path("backend/data") / file_name
             if file_path.suffix.lower() == ".svg":
                 print(f"Skipping SVG (PIL does not support SVG): {file_name}")
                 delete_image(file_name)
@@ -93,17 +92,19 @@ def main():
                 get_metadata_from_images(file_name)
                 delete_image(file_name)
 
-    p = Path('scrapper/tmp')
+    p = Path('backend/data/images')
     files = [entry.name for entry in p.iterdir() if entry.is_file()]
     if files:
         for file in files:
             file_name = file
-            file_path = Path("scrapper/tmp") / file_name
+            file_path = Path("backend/data/images") / file_name
             if file_path.suffix.lower() == ".svg":
                 print(f"Skipping SVG (PIL does not support SVG): {file_name}")
             else:
+                # read_png_chunks(file_name)
                 get_metadata_from_images(file_name)
 
 
 if __name__ == "__main__":
     main()
+

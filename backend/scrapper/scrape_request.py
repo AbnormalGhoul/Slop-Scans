@@ -46,12 +46,10 @@ def extract_image_urls_from_html(html):
 if __name__ == "__main__":
     url = input("Enter the URL to scrape: ")
     html_content = scrape_url(url)
-    with open("scraped_content.html", "w", encoding="utf-8") as file:
-        file.write(html_content)
     text_content = extract_text_from_html(html_content)
-    with open("scraped_text.txt", "w", encoding="utf-8") as file:
+    with open("data/scraped_text.txt", "w", encoding="utf-8") as file:
         file.write(text_content)
     image_urls = extract_image_urls_from_html(html_content)
-    with open("scraped_image_urls.txt", "w", encoding="utf-8") as file:
+    with open("data/scraped_image_urls.txt", "w", encoding="utf-8") as file:
         for url in image_urls:
             file.write(url + "\n")
