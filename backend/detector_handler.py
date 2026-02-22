@@ -76,7 +76,11 @@ def run_detector(url: str)->float:
         with open("data/scraped_text.txt", "r", encoding="utf-8") as f:
             scraped_text = f.read()
 
-        gemini_phrases = find_top_ai_phrases(final_score, scraped_text)
+        try:
+            gemini_phrases = str.join("\n", find_top_ai_phrases(final_score, scraped_text))
+        except Exception as e:
+            print(f"Error in Gemini analysis: {e}")
+            gemini_phrases = "Failed to load analysis"
 
         print("\nGemini AI Phrase Analysis")
         print(f"AI Score: {final_score:.2f}")

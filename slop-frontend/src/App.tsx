@@ -9,6 +9,7 @@ function App() {
   const [color, setColor] = useState('#10b981')
   const [text, setText] = useState("Human")
   const [loading, setLoading] = useState(false)
+  const [ai_phrases, setAiPhrases] = useState("")
 
   const getActiveTabUrl = async (): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -68,7 +69,12 @@ function App() {
       try {
         setLoading(true)
         const pageUrl = await getActiveTabUrl()
-        const score = await detectPage(pageUrl)
+        const response = await detectPage(pageUrl)
+        console.log('Detection API response:', response)
+        const score = response.percentage
+        const ai_phrases = response.ai_phrases
+
+        setAiPhrases(ai_phrases)
         
         // Convert score to 0-100 range if needed
         let progressValue = score
@@ -126,6 +132,10 @@ function App() {
           text={`${text} (${Math.round(progress)}%)`}
           imageUrl={logo}
         />
+
+        <p style={{ marginTop: '20px', fontSize: '18px', color: '#374151' }}>
+          {ai_phrases}
+        </p>
       </div>
     </div>
   )

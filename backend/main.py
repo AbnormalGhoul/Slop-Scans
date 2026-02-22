@@ -12,6 +12,7 @@ import uvicorn
 
 from services.text_detector import text_detector
 from services.image_detector import image_detector
+from services.gemini_analyzer import find_top_ai_phrases
 from config import settings
 
 from detector_handler import run_detector
@@ -35,7 +36,7 @@ def root():
 @app.post("/detect/page", response_model=DetectionResult)
 def detect_page(request: PageRequest):
     result = run_detector(request.url)
-    return result
+    return DetectionResult(percentage=result["percentage"], ai_phrases=result["ai_phrases"])
 
 @app.post("/detect/text")
 def detect_text(request: TextRequest):
