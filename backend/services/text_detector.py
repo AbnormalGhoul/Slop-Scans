@@ -49,11 +49,13 @@ class TextAIDetector:
         )
 
         self.tokenizer = AutoTokenizer.from_pretrained(
-            settings.TEXT_MODEL_NAME
+            settings.TEXT_MODEL_NAME,
+            token=settings.HF_TOKEN
         )
 
         self.model = DesklibAIDetectionModel.from_pretrained(
-            settings.TEXT_MODEL_NAME
+            settings.TEXT_MODEL_NAME,
+            token=settings.HF_TOKEN
         )
 
         self.model.to(self.device)
