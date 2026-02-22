@@ -1,0 +1,60 @@
+Implementing Web Scraping in Python with BeautifulSoup - GeeksforGeeksCoursesTutorialsInterview PrepPython TutorialData TypesInterview QuestionsExamplesQuizzesDSA PythonData ScienceNumPyPandasPracticeDjangoFlaskImplementing Web Scraping in Python with BeautifulSoupLast Updated : 13 Jan, 2026BeautifulSoup is a Python library used for web scraping. It helps parse HTML and XML documents making it easy to navigate and extract specific parts of a webpage. This article explains the steps of web scraping using BeautifulSoup.Steps involved in web scrapingSend an HTTP Request: Use the requests library to send a request to the webpage URL and get the HTML content in response.Parse the HTML Content: Use a parser like html.parser or html5lib to convert the raw HTML into a structured format (parse tree).Extract Data: Use BeautifulSoup to navigate the parse tree and extract the required data using tags, classes, or IDs.Now, let’s go through the web scraping process step by step.Before starting with the steps, make sure to install all the necessary libraries. Run the following commands on command prompt or terminal using pip:pip install requestspip install beautifulsoup4Step 1: Fetch HTML ContentThe first step in web scraping is to send an HTTP request to the target webpage and fetch its raw HTML content. This is done using requests library.
+Python
+
+import requests
+
+url = "https://www.geeksforgeeks.org/dsa/dsa-tutorial-learn-data-structures-and-algorithms/"
+response = requests.get(url)
+print(response.text)
+
+Explanation:GET request is sent to the URL using requests library..text attribute of the response object returns HTML content of the page as a string.Note: If you're facing issues like "403 Forbidden" try adding a browser user agent like below. You can find your user agent online based on device and browser.
+Python
+
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+response = requests.get(url, headers=headers)
+
+Step 2: Parse HTML with BeautifulSoupNow that we have raw HTML, the next step is to parse it using BeautifulSoup so we can easily navigate and extract specific parts of the content.
+Python
+
+from bs4 import BeautifulSoup
+
+soup = BeautifulSoup(response.text, 'html.parser')
+print(soup.prettify())  # prints well-formatted HTML
+
+Explanation:Passing raw HTML to BeautifulSoup to create a parsed tree structure.html.parser is Python's built-in HTML parser.Note: BeautifulSoup supports different parsers like html.parser, lxml and html5lib. Choose one by specifying it as the second argument. For Example: soup = BeautifulSoup(response.text, 'html5lib')Step 3: Extract Specific DataNow that the HTML is parsed, specific elements like text, links or images can be extracted by targeting tags and classes using BeautifulSoup methods like .find() or .find_all().Suppose we want to extract quotes from a website then we will do:
+Python
+
+ import requests
+from bs4 import BeautifulSoup
+url = "https://www.passiton.com/inspirational-quotes"
+response = requests.get(url)
+soup = BeautifulSoup(response.text, 'html.parser')
+quotes = []
+quote_boxes = soup.find_all('div', class_='col-6 col-lg-3 text-center margin-30px-bottom sm-margin-30px-top')
+for box in quote_boxes:
+    quote_text = box.img['alt'].split(" #")
+    quote = {
+        'theme': box.h5.text.strip(),
+        'image_url': box.img['src'],
+        'lines': quote_text[0],
+        'author': quote_text[1] if len(quote_text) > 1 else 'Unknown'
+    }
+    quotes.append(quote)
+# Display extracted quotes
+for q in quotes[:5]:  # print only first 5 for brevity
+    print(q) 
+  
+
+Explanation:soup.find_all(): locates all quote containers based on their class.For each quote box box.img['alt'] gives text containing quote lines and author and split(" #") separates the quote from the author.A dictionary is created with theme, image_url, lines and author.Extracts quotes into a list of dictionaries and prints the first 5 for brevity.Understanding the HTML StructureBefore extracting data, it’s helpful to inspect the HTML structure using soup.prettify() to find out where the information is written in the code of the page. For example: quotes is inside a <div> with a specific id or class, we can find it using:container = soup.find('div', attrs={'id': 'all_quotes'})find() gets the first <div> that has id="all_quotes".If there are multiple quote boxes inside that section, we can use:container.find_all()Step 4: Save Data to CSVNow that the data is extracted, it can be saved into a CSV file for easy storage and future use. Python’s built-in csv module is used to write the data in a structured format.
+Python
+
+import csv
+
+filename = "quotes.csv"
+with open(filename, mode='w', newline='', encoding='utf-8') as file:
+    writer = csv.DictWriter(file, fieldnames=['theme', 'image_url', 'lines', 'author'])
+    writer.writeheader()
+    for quote in quotes:
+        writer.writerow(quote)
+
+Explanation:with open() statement creates a new CSV file (quotes.csv) in write mode with UTF-8 encoding.csv.DictWriter() sets up a writer object to write dictionaries to the file using specified column headers.writer.writeheader() writes the header row to the CSV using the defined field names.for loop writes each quote dictionary as a row in the CSV using writer.writerow(quote)This script scrapes inspirational quotes from the website, parses the HTML content, extracts relevant information and saves the data to a quotes.csv file for later use.CommentArticle Tags:Article Tags:ProjectPythonWeb-scrapingExplorePython FundamentalsPython Introduction2 min readInput and Output in Python4 min readPython Variables4 min readPython Operators4 min readPython Keywords2 min readPython Data Types8 min readConditional Statements in Python3 min readLoops in Python5 min readPython Functions5 min readPython Data StructuresPython String5 min readPython Lists4 min readPython Tuples4 min readPython Dictionary3 min readPython Sets6 min readPython Arrays7 min readAdvanced PythonPython OOP Concepts4 min readPython Exception Handling5 min readFile Handling in Python4 min readPython Database Tutorial4 min readPython MongoDB Tutorial3 min readPython MySQL9 min readPython Packages10 min readPython Modules3 min readPython DSA Libraries5 min readList of Python GUI Library and Packages3 min readData Science with PythonNumPy Tutorial - Python Library4 min readPandas Tutorial4 min readMatplotlib Tutorial5 min readPython Seaborn Tutorial3 min readStatsModel Library - Tutorial3 min readLearning Model Building in Scikit-learn6 min readTensorFlow Tutorial2 min readPyTorch Tutorial6 min readWeb Development with PythonFlask Tutorial8 min readDjango Tutorial | Learn Django Framework7 min readDjango ORM - Inserting, Updating & Deleting Data4 min readTemplating With Jinja2 in Flask6 min readDjango Templates5 min readBuild a REST API using Flask - Python3 min readBuilding a Simple API with Django REST Framework3 min readPython PracticePython Quiz1 min readPython Coding Practice1 min readPython Interview Questions and Answers15+ min readCorporate & Communications Address:A-143, 7th Floor, Sovereign Corporate Tower, Sector- 136, Noida, Uttar Pradesh (201305)Registered Address:K 061, Tower K, Gulshan Vivante Apartment, Sector 137, Noida, Gautam Buddh Nagar, Uttar Pradesh, 201305CompanyAbout UsLegalPrivacy PolicyContact UsAdvertise with usGFG Corporate SolutionCampus Training ProgramExplorePOTDJob-A-ThonBlogsNation Skill UpTutorialsProgramming LanguagesDSAWeb TechnologyAI, ML & Data ScienceDevOpsCS Core SubjectsInterview PreparationSoftware and ToolsCoursesML and Data ScienceDSA and PlacementsWeb DevelopmentProgramming LanguagesDevOps & CloudGATETrending TechnologiesVideosDSAPythonJavaC++Web DevelopmentData ScienceCS SubjectsPreparation CornerInterview CornerAptitudePuzzlesGfG 160System Design@GeeksforGeeks, Sanchhaya Education Private Limited, All rights reserved

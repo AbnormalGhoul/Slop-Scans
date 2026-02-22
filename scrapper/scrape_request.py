@@ -1,4 +1,5 @@
 import requests
+from bs4 import BeautifulSoup
 
 DEFAULT_HEADERS = {
     "User-Agent": (
@@ -28,8 +29,29 @@ def scrape_url(url: str) -> str:
         return ""
     
 
+def extract_text_from_html(html):
+    soup = BeautifulSoup(html, 'html.parser')
+    text = soup.get_text()
+    return text
+
+def extract_image_urls_from_html(html):
+    soup = BeautifulSoup(html, 'html.parser')
+    image_urls = []
+    for img in soup.find_all('img'):
+        src = img.get('src') or img.get('data-src')
+        if src:
+            image_urls.append(src)
+    return image_urls
+
 if __name__ == "__main__":
     url = input("Enter the URL to scrape: ")
     html_content = scrape_url(url)
     with open("scraped_content.html", "w", encoding="utf-8") as file:
         file.write(html_content)
+    text_content = extract_text_from_html(html_content)
+    with open("scraped_text.txt", "w", encoding="utf-8") as file:
+        file.write(text_content)
+    image_urls = extract_image_urls_from_html(html_content)
+    with open("scraped_image_urls.txt", "w", encoding="utf-8") as file:
+        for url in image_urls:
+            file.write(url + "\n")
