@@ -1,6 +1,7 @@
 from scrapper.scrape_request import *
 from scrapper.img_metadata import *
 from scrapper.text_cleanup import *
+from services.gemini_analyzer import find_top_ai_phrases
 
 from services.text_detector import text_detector
 from services.image_detector import image_detector
@@ -67,7 +68,26 @@ def run_detector(url: str)->float:
         image_result = {"ai_probability": 0.0}  # No image found, set AI probability to 0
     print("Detection completed.")
 
-    return max(text_result['ai_probability'], image_result['ai_probability'])
+    final_score = max(text_result['ai_probability'], image_result['ai_probability'])
+
+    gemini_phrases = None
+
+    if final_score > 0.5:
+        with open("data/scraped_text.txt", "r", encoding="utf-8") as f:
+            scraped_text = f.read()
+
+        gemini_phrases = find_top_ai_phrases(final_score, scraped_text)
+
+        print("\nGemini AI Phrase Analysis")
+        print(f"AI Score: {final_score:.2f}")
+        print("Top 3 AI-like phrases:")
+
+        print(gemini_phrases)
+
+    return {
+        "percentage": final_score,
+        "ai_phrases": gemini_phrases
+    }
 
 
 if __name__ == "__main__":

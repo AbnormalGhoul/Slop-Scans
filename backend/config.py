@@ -5,6 +5,8 @@ load_dotenv()
 
 class Settings:
     
+    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY")
+    
     SIGHTENGINE_API_USER: str = os.getenv("SIGHTENGINE_API_USER")
     SIGHTENGINE_API_SECRET: str = os.getenv("SIGHTENGINE_API_SECRET")
     
