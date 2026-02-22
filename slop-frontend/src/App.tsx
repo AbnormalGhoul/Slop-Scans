@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import { CircularProgressBar } from './CircularProgressBar'
 import { detectPage } from './apiCall'
+import logo from './assets/react.svg'
 
 function App() {
-  const [progress, setProgress] = useState(0)
+  const [progress, setProgress] = useState(-1)
   const [color, setColor] = useState('#10b981')
   const [text, setText] = useState("Human")
   const [loading, setLoading] = useState(false)
@@ -29,9 +30,9 @@ function App() {
   }
 
   const handleColorChange = (value: number) => {
-    if (value == 0) {
+    if (value == -1) {
       setColor('#e5e7eb') // gray for 0%
-    } else if (value >= 1 && value <= 30) {
+    } else if (value >= 0 && value <= 30) {
       setColor('#ef4444') // red
     } else if (value >= 31 && value <= 69) {
       setColor('#eab308') // yellow
@@ -46,9 +47,9 @@ function App() {
 
 
   const handleTextChange = (value: number) => {
-    if (value == 0) {
+    if (value == -1) {
       setText("")
-    } else if (value >= 1 && value <= 30) {
+    } else if (value >= 0 && value <= 30) {
       setText("AI")
     } else if (value >= 31 && value <= 69) {
       setText("Mixed")
@@ -72,7 +73,7 @@ function App() {
         // Convert score to 0-100 range if needed
         let progressValue = score
         if (score <= 1) {
-          progressValue = score * 100  // Convert 0-1 to 0-100
+          progressValue = (1-score) * 100  // Convert 0-1 to 0-100
         }
         
         // Clamp value between 0-100
@@ -123,6 +124,7 @@ function App() {
           size={200}
           color={color}
           text={`${text} (${Math.round(progress)}%)`}
+          imageUrl={logo}
         />
       </div>
     </div>

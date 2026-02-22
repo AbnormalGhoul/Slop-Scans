@@ -25,7 +25,7 @@ def run_detector(url: str)->float:
         print("\nRunning local detection tests...\n")
 
     # Step 2: Run detection models
-    text_path = "data/transcription.txt"
+    text_path = "data/scraped_text.txt"
     
     remove_double_quotes_from_file(text_path)  # Clean up text file before test
 
