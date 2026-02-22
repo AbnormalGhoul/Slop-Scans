@@ -1,14 +1,15 @@
-// Content script for Slop Scan
-console.log('Slop Scan content script loaded');
-
-interface ScrapedData {
+export interface ScrapedData {
   texts: string[]
   images: string[]
   totalTexts: number
   totalImages: number
 }
 
-const scrapePageContent = (): ScrapedData => {
+/**
+ * Scrapes all text and images from the current page
+ * This function runs in the content script context
+ */
+export const scrapePageContent = (): ScrapedData => {
   const texts: string[] = []
   const images: string[] = []
 
@@ -40,7 +41,7 @@ const scrapePageContent = (): ScrapedData => {
   const divs = document.querySelectorAll('div')
   divs.forEach((div) => {
     const text = (div as HTMLElement).innerText?.trim()
-    if (text && text.length < 500) {
+    if (text && text.length < 500) { // Avoid very long blocks
       texts.push(text)
     }
   })
@@ -48,7 +49,7 @@ const scrapePageContent = (): ScrapedData => {
   // Extract all image sources
   const imgElements = document.querySelectorAll('img')
   imgElements.forEach((img) => {
-    const src = (img as HTMLImageElement).src || img.getAttribute('data-src')
+    const src = img.src || img.getAttribute('data-src')
     if (src) {
       images.push(src)
     }
@@ -79,33 +80,28 @@ const scrapePageContent = (): ScrapedData => {
   }
 }
 
-chrome.runtime.onMessage.addListener(
-  (request: { action: string }, _sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void) => {
-    if (request.action === 'scrapePage') {
-      const scrapedData = scrapePageContent()
-      sendResponse(scrapedData)
-    } else if (request.action === 'downloadScrapedData') {
-      const scrapedData = scrapePageContent()
-      const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-')
-      const filename = `scraped-${timestamp}.txt`
-      
-      // Create text content
-      const textContent = `Scraped Content - ${new Date().toLocaleString()}
-${'='.repeat(50)}
+/**
+ * Sends a message to the content script to scrape the page
+ */
+export const sendScrapeRequest = async (): Promise<ScrapedData> => {
+  return new Promise((resolve, reject) => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0].id === undefined) {
+        reject(new Error('No active tab found'))
+        return
+      }
 
-TEXT CONTENT (${scrapedData.totalTexts} blocks):
-${'-'.repeat(50)}
-${scrapedData.texts.join('\n\n')}`
-      
-      // Send to background script to download
-      chrome.runtime.sendMessage(
-        { action: 'downloadFile', filename, content: textContent, images: scrapedData.images },
+      chrome.tabs.sendMessage(
+        tabs[0].id,
+        { action: 'scrapePage' },
         (response) => {
-          sendResponse({ success: true, message: response.message })
+          if (chrome.runtime.lastError) {
+            reject(chrome.runtime.lastError)
+          } else {
+            resolve(response as ScrapedData)
+          }
         }
       )
-    } else if (request.action === 'scanPage') {
-      sendResponse({ status: 'scanning' })
-    }
-  }
-);
+    })
+  })
+}

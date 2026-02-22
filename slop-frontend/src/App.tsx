@@ -26,6 +26,50 @@ function App() {
     setProgress(newProgress)
   }
 
+  const handleScrapeClick = async () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0].id === undefined) {
+        console.error('No active tab found')
+        return
+      }
+
+      chrome.tabs.sendMessage(
+        tabs[0].id,
+        { action: 'scrapePage' },
+        (response) => {
+          if (chrome.runtime.lastError) {
+            console.error('Error:', chrome.runtime.lastError)
+          } else {
+            console.log('Scraped data:', response)
+            alert(`Found ${response.totalTexts} text blocks and ${response.totalImages} images`)
+          }
+        }
+      )
+    })
+  }
+
+  const handleDownloadClick = async () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0].id === undefined) {
+        console.error('No active tab found')
+        return
+      }
+
+      chrome.tabs.sendMessage(
+        tabs[0].id,
+        { action: 'downloadScrapedData' },
+        (_response) => {
+          if (chrome.runtime.lastError) {
+            console.error('Error:', chrome.runtime.lastError)
+            alert('Error downloading files')
+          } else {
+            alert(`Downloaded scraped.txt and images!`)
+          }
+        }
+      )
+    })
+  }
+
   const handleTextChange = (value: number) => {
     if (value >= 1 && value <= 30) {
       setText("AI")
@@ -61,6 +105,37 @@ function App() {
             style={{ width: '200px' }}
           />
         </div>
+        <button 
+          onClick={handleScrapeClick}
+          style={{
+            marginTop: '20px',
+            padding: '10px 20px',
+            backgroundColor: '#3b82f6',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            marginRight: '10px'
+          }}
+        >
+          Scrape Current Page
+        </button>
+        <button 
+          onClick={handleDownloadClick}
+          style={{
+            marginTop: '20px',
+            padding: '10px 20px',
+            backgroundColor: '#10b981',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            fontSize: '14px'
+          }}
+        >
+          Download Files
+        </button>
       </div>
     </div>
   )
