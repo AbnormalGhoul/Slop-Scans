@@ -27,6 +27,7 @@ class PageRequest(BaseModel):
 
 class DetectionResult(BaseModel):
     percentage: float
+    image_ai: bool
     ai_phrases: Optional[str] = None
 
 @app.get("/")
@@ -36,7 +37,7 @@ def root():
 @app.post("/detect/page", response_model=DetectionResult)
 def detect_page(request: PageRequest):
     result = run_detector(request.url)
-    return DetectionResult(percentage=result["percentage"], ai_phrases=result["ai_phrases"])
+    return DetectionResult(percentage=result["percentage"], image_ai=result["image_ai"], ai_phrases=result["ai_phrases"])
 
 @app.post("/detect/text")
 def detect_text(request: TextRequest):

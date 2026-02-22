@@ -25,7 +25,10 @@ def run_detector(url: str)->float:
     
         print("\nRunning local detection tests...\n")
 
-    # Step 2: Run detection models
+    # Step 2: Download images and extract metadata
+    scrape_matadata()  # This will download images and extract metadata, also cleaning up after itself
+
+    # Step 3: Run detection models
     text_path = "data/scraped_text.txt"
     
     remove_double_quotes_from_file(text_path)  # Clean up text file before test
@@ -48,7 +51,7 @@ def run_detector(url: str)->float:
     image_files = []
 
     for ext in image_extensions:
-        image_files.extend(glob.glob(f"data/*.{ext}"))
+        image_files.extend(glob.glob(f"data/images/*.{ext}"))
 
     if image_files:
         image_path = image_files[0]  # take first match
@@ -90,6 +93,7 @@ def run_detector(url: str)->float:
 
     return {
         "percentage": final_score,
+        "image_ai": image_result['ai_probability'] >= settings.IMAGE_AI_THRESHOLD,
         "ai_phrases": gemini_phrases
     }
 
