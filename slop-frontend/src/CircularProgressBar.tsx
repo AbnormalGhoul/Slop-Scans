@@ -21,14 +21,14 @@ export const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
   backgroundColor = '#e5e7eb',
   text = `${Math.round(progress)}%`,
   textColor = '#1f2937',
-  fontSize = 24,
+  fontSize = 20,
   imageUrl,
   imageSize,
 }) => {
   const radius = (size - strokeWidth) / 2
   const circumference = 2 * Math.PI * radius
   const offset = circumference - (progress / 100) * circumference
-  const innerSize = imageSize ?? Math.max(0, size - strokeWidth * 2)
+  const innerSize = imageSize ? imageSize * 0.75 : Math.max(0, (size - strokeWidth * 1.5) * 0.75)
   const imageX = (size - innerSize) / 2
   const imageY = (size - innerSize) / 2
   const clipId = `cpb-clip-${Math.round(size)}-${Math.round(strokeWidth)}`
@@ -72,8 +72,8 @@ export const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
         {imageUrl && (
           <image
             href={imageUrl}
-            x={imageX}
-            y={imageY}
+            x={imageX + 10}
+            y={imageY - 15}
             width={innerSize}
             height={innerSize}
             preserveAspectRatio="xMidYMid slice"
@@ -84,7 +84,7 @@ export const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
         {/* Center text */}
         <text
           x={size / 2}
-          y={size / 2}
+          y={size / 1.35}
           textAnchor="middle"
           dominantBaseline="central"
           fontSize={fontSize}

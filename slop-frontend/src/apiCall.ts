@@ -18,14 +18,14 @@ import axios from "axios";
 //         throw error;
 //     }
 
-export async function detectPage(url: string): Promise<number> {
+export const detectPage = async (url: string) => {
     try {
         const response = await axios.post(
             "http://localhost:8000/detect/page",
             { url },
             { headers: { "Content-Type": "application/json" } }
         );
-        return response.data.percentage;
+        return response.data;
     } catch (error) {
         console.error("Error detecting page:", error);
         throw error;

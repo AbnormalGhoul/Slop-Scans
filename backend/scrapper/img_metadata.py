@@ -5,6 +5,10 @@ from dotenv import load_dotenv
 
 
 def save_image_from_url(url, file_name):
+    # Ensure URL has https:// prefix
+    if not url.startswith("http://") and not url.startswith("https://"):
+        url = "https://" + url
+    
     try: 
         response = requests.get(url, stream=True, timeout=10)
         response.raise_for_status()
@@ -36,9 +40,9 @@ def get_metadata_from_images(file_name):
         print("Error: EXIFTOOL_API_KEY not found in environment variables")
         return
     
-    path = Path("backend/data/images") / file_name
+    path = Path("data/images") / file_name
     if not path.is_file():
-        print(f"Error: Image file '{file_name}' not found in 'backend/data'")
+        print(f"Error: Image file '{file_name}' not found in 'data/images' directory")
         return
 
     with open(path, "rb") as f:
@@ -71,10 +75,10 @@ def get_metadata_from_images(file_name):
         return metadata
 
 
-def main():
+def scrape_matadata():
     image_urls = []
     try:    
-        with open('backend/data/scraped_image_url.txt', 'r') as file:
+        with open('data/scraped_image_urls.txt', 'r') as file:
             image_urls = file.read().splitlines()
     except FileNotFoundError:
         print("Error: 'scraped_image_urls.txt' not found")
@@ -84,7 +88,7 @@ def main():
             file_name = url.split("/")[-1].split("?")[0]
             save_image_from_url(url, file_name)
 
-            file_path = Path("backend/data") / file_name
+            file_path = Path("data") / file_name
             if file_path.suffix.lower() == ".svg":
                 print(f"Skipping SVG (PIL does not support SVG): {file_name}")
                 delete_image(file_name)
@@ -92,12 +96,12 @@ def main():
                 get_metadata_from_images(file_name)
                 delete_image(file_name)
 
-    p = Path('backend/data/images')
+    p = Path('data/images')
     files = [entry.name for entry in p.iterdir() if entry.is_file()]
     if files:
         for file in files:
             file_name = file
-            file_path = Path("backend/data/images") / file_name
+            file_path = Path("data/images") / file_name
             if file_path.suffix.lower() == ".svg":
                 print(f"Skipping SVG (PIL does not support SVG): {file_name}")
             else:

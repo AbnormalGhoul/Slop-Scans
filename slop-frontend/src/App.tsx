@@ -2,13 +2,17 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import { CircularProgressBar } from './CircularProgressBar'
 import { detectPage } from './apiCall'
-import logo from './assets/react.svg'
+import slopBowl from './assets/slop_bowl.png'
+import saladBowl from './assets/salad_bowl.png'
 
 function App() {
   const [progress, setProgress] = useState(-1)
   const [color, setColor] = useState('#10b981')
   const [text, setText] = useState("Human")
   const [loading, setLoading] = useState(false)
+  const [ai_phrases, setAiPhrases] = useState("")
+  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined)
+  const [ai_images, setAiImages] = useState<boolean>(false)
 
   const getActiveTabUrl = async (): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -43,6 +47,8 @@ function App() {
 
   useEffect(() => {
     handleColorChange(progress)
+    handleTextChange(progress)
+    handleBowlChange(progress)
   }, [progress])
 
 
@@ -58,9 +64,15 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    handleTextChange(progress)
-  }, [progress])
+const handleBowlChange = (value: number) => {
+    if (value == -1) {
+      setImageUrl(undefined)
+    } else if (value >= 0 && value <= 50) {
+      setImageUrl(slopBowl)
+    } else if (value >= 51 && value <= 100) {
+      setImageUrl(saladBowl)
+    }
+  }
 
   // Listen for page changes and call the detection API
   useEffect(() => {
@@ -68,7 +80,14 @@ function App() {
       try {
         setLoading(true)
         const pageUrl = await getActiveTabUrl()
-        const score = await detectPage(pageUrl)
+        const response = await detectPage(pageUrl)
+        console.log('Detection API response:', response)
+        const score = response.percentage
+        const ai_phrases = response.ai_phrases
+        const is_ai_image = response.image_ai
+
+        setAiImages(is_ai_image)
+        setAiPhrases(ai_phrases)
         
         // Convert score to 0-100 range if needed
         let progressValue = score
@@ -124,8 +143,21 @@ function App() {
           size={200}
           color={color}
           text={`${text} (${Math.round(progress)}%)`}
-          imageUrl={logo}
+          imageUrl={imageUrl}
         />
+        {!loading && (
+          <>
+            <h2 style={{ marginTop: '20px', color: '#374151' }}>Most AI-like phrases:</h2>
+            <p style={{ marginTop: '20px', fontSize: '18px', color: '#374151' }}>
+              {ai_phrases}
+            </p>
+          </>
+        )}
+        {!loading && ai_images && (
+          <>
+            <h2 style={{ marginTop: '20px', color: '#374151' }}>AI-generated images detected</h2>
+          </>
+        )}
       </div>
     </div>
   )
