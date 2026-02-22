@@ -6,18 +6,33 @@ import io
 import glob
 import os
 
+import uvicorn
+
 from services.text_detector import text_detector
 from services.image_detector import image_detector
 from config import settings
 
-app = FastAPI(title=settings.APP_NAME)
+from detector_handler import run_detector
+
+app = FastAPI(title=settings.APP_NAME, debug=True)
 
 class TextRequest(BaseModel):
     text: str
 
+class PageRequest(BaseModel):
+    url: str
+
+class DetectionResult(BaseModel):
+    percentage: float
+
 @app.get("/")
 def root():
     return {"status": "Slop Scans backend running"}
+
+@app.post("/detect/page", response_model=DetectionResult)
+def detect_page(request: PageRequest):
+    percentage = run_detector(request.url)
+    return DetectionResult(percentage=percentage)
 
 @app.post("/detect/text")
 def detect_text(request: TextRequest):
@@ -117,6 +132,8 @@ if __name__ == "__main__":
         print()
         
         delete_image(image_path)  # Clean up after test
+
+    uvicorn.run(app, host="0.0.0.0", port=8000)
         
 else:
     print("No supported image file found in /data/")

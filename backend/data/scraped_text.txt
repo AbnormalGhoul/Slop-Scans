@@ -1,0 +1,255 @@
+
+
+
+
+
+
+
+
+
+
+
+
+What is Kamiak? | High Performance Computing |  Washington State University
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Skip to site navigation
+Skip to content
+ 
+
+
+
+
+ 
+
+
+
+
+
+
+WSU Cougar Head
+
+
+
+
+		Washington State University	
+
+		WSU
+	
+
+
+
+
+
+
+Give
+
+
+Apply
+
+
+Locations
+
+
+My WSU
+
+
+
+
+
+
+
+
+
+Menu
+Menu
+
+Close
+Center for Institutional Research Computing
+About
+
+What is Kamiak?
+CIRC Team
+Advisory Committee
+Strategic Plan
+Governance
+Acceptable Use Policy (AUP)
+
+
+Getting Started
+
+Requesting Access
+Cluster Resources
+Acknowledging Kamiak
+Invest in Kamiak
+Include Kamiak in a Grant
+
+
+Quick Reference
+
+Quick Start Guide
+Kamiak Cheat Sheet
+Training Slides
+Training Videos
+
+
+User Guide
+
+Terminal Windows
+Job Submission
+Environment Modules
+Storage
+File Transfers
+Text Editors
+Running Singularity
+Running Python
+Running R
+Running MySQL
+
+
+Support
+
+Service Requests
+Help Desk
+Maintenance Windows
+
+
+News and Events
+
+News
+Events
+
+
+Contact Us
+WSU Research Centers
+ Close
+
+
+
+
+
+
+
+
+ 
+								Center for Institutional Research Computing							
+
+								High Performance Computing							
+ 
+
+
+
+
+
+What is Kamiak?
+
+
+
+Kamiak is a High Performance Computing Cluster
+The Kamiak cluster consists of a collection of powerful computers, called nodes, connected by a high-speed network. Applications can run in parallel over many cores and across multiple nodes to speed up solving large problems. From the user’s point of view, the cluster appears as one large single system with a Linux operating system that is accessible through ssh.
+
+
+
+
+
+
+Kamiak is a Condo
+The Kamiak HPC cluster follows a condominium model in which the compute resources are purchased by faculty investors and colleges, while the University provides the facilities, infrastructure, and staff to support research computing.   The condominium model fosters growth and continuity of the HPC resources, while the centralized infrastructure and staff ensure a high quality of service and support.
+
+
+
+
+
+
+Kamiak is a Community
+Kamiak provides a uniform user experience to all computational researchers at WSU. Having a centralized system lowers barriers to collaboration by providing a space in which researchers from across the university can store data, share code, and build communal software.
+
+
+
+ 
+
+
+
+
+
+
+
+ 
+ 
+WSU Cougar Head
+
+
+
+
+
+
+
+
+
+		© Washington State University 2026	
+
+
+
+Access
+
+
+Policies
+
+
+MyWSU
+
+
+Follow WSU
+
+
+
+
+
+
+
+
+
+
+
+
