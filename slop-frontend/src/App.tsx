@@ -145,7 +145,7 @@ const handleBowlChange = (value: number) => {
           text={`${text} (${Math.round(progress)}%)`}
           imageUrl={imageUrl}
         />
-        {!loading && (
+        {!loading && ai_phrases &&(
           <>
             <h2 style={{ marginTop: '20px', color: '#374151' }}>Most AI-like phrases:</h2>
             <p style={{ marginTop: '20px', fontSize: '18px', color: '#374151' }}>

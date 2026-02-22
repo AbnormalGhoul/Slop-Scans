@@ -153,7 +153,7 @@ Learn how you can extract image metadata such as GPS info, camera make, model an
 
 
 
-Welcome! Meet our Python Code Assistant, your new coding buddy. Why wait? Start exploring now!
+Turn your code into any language with our Code Converter. It's the ultimate tool for multi-language programming. Start converting now!
 In this tutorial, you will learn how you can extract some useful metadata within images using the Pillow library in Python.
 Devices like digital cameras, smartphones, and scanners use the EXIF standard to save images or audio files. This standard contains many useful tags to extract, which can be useful for forensic investigation, such as the make and model of the device, the exact date and time of image creation, and even the GPS information on some devices.
 Please note that there are free tools to extract metadata such as ImageMagick or ExifTool on Linux, the goal of this tutorial is to extract metadata with the Python programming language.
@@ -252,10 +252,10 @@ Alright, we're done. A good challenge for you is to download all images from a U
 Finally, we have an EBook for ethical hackers like you, where we build 35+ hacking tools with Python from scratch! Check it out here.
 Learn also: How to Use Steganography to Hide Secret Data in Images in Python.
 Happy Coding ♥
-Want to code smarter? Our Python Code Assistant is waiting to help you. Try it now!
+Finished reading? Keep the learning going with our AI-powered Code Explainer. Try it now!
  View Full Code
 
- Assist My Coding
+ Analyze My Code
 
 Sharing is caring!
 
