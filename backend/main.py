@@ -9,15 +9,12 @@ from config import settings
 
 app = FastAPI(title=settings.APP_NAME)
 
-
 class TextRequest(BaseModel):
     text: str
-
 
 @app.get("/")
 def root():
     return {"status": "Slop Scans backend running"}
-
 
 @app.post("/detect/text")
 def detect_text(request: TextRequest):
@@ -27,13 +24,10 @@ def detect_text(request: TextRequest):
         **result
     }
 
-
 @app.post("/detect/image")
 async def detect_image(file: UploadFile = File(...)):
     contents = await file.read()
-    image = Image.open(io.BytesIO(contents)).convert("RGB")
-
-    result = image_detector.predict(image)
+    result = image_detector.predict_from_bytes(contents)
 
     return {
         "type": "image",

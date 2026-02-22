@@ -3,7 +3,6 @@ import torch.nn as nn
 from transformers import AutoTokenizer, AutoConfig, AutoModel, PreTrainedModel
 from config import settings
 
-
 class DesklibAIDetectionModel(PreTrainedModel):
     config_class = AutoConfig
 
