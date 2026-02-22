@@ -1,0 +1,21 @@
+
+
+
+
+
+Gemini | MLH Partner | Major League Hacking
+
+
+
+
+
+
+
+Skip to main contentSign InMajor League Hacking has Acquired DEV (dev.to) Learn more
+MLH LogoParticipateOrganizersCommunityAboutDEVAttendFor BusinessesBuild with GeminiEngineer the future of AI with Gemini!Build the next generation of AI with Gemini and MLH! Access Google’s most capable AI models, explore developer resources, and win prizes for your hackathon projects.AI/MLGenerative AILLMAgentic AIRAGMultimodal AIBuild with GeminiResourcesBuild mind-blowing AI apps that can understand language, analyze data, and ignite your creativity with the Gemini API. Quick Start GuideThe fastest way to start building with Google Gemini. 1Gemini Hackathon HubHead over to mlh.link/gemini-hackathon-hub: your mission control for the hackathon. Access the latest multimodal models, real-time docs search, and expert resources to ship your project fast.
+2Google AI StudioThe fastest path from prompt to production with Gemini. Try out Google AI Studio at mlh.link/gemini-aistudio.
+3Meet the Model FamilyChoose the right tool for the job. From lightning fast Flash to the reasoning depth of Pro. Explore all the models at mlh.link/gemini-model-familiy.
+The Google Gemini Quickstart guideThis quickstart will show you how to install Gemini libraries and make your first API request.The Google Gemini Quickstart guideReference the Gemini API documentationThe fastest path from prompt to production with Gemini, Veo, Nano Banana, and more.Reference the Gemini API documentationFind Gemini API code examples with the Gemini API CookbookThis cookbook provides a structured learning path for using the Gemini API, focusing on hands-on tutorials and practical examples.Find Gemini API code examples with the Gemini API CookbookGoogle Gemini: Free Pro Plan for Students.Free for 1 year. Get more access to our most accurate model Gemini 3.1 Pro, unlimited image uploads, Pro-level image generation, customized quizzes and advanced learning tools like NotebookLM, plus 2 TB storage. Just for Students.Google Gemini: Free Pro Plan for Students.Activate your $10 in free credits!Use this link to activate your $10 in free monthly Google credits. Activate your $10 in free credits!FooterMajor League HackingMLH LogoWe help run the global hacker community. It's our mission to empower hackers, just like you.InstagramDiscordTikTokLinkedInHackathonsUpcoming HackathonsGlobal Hack WeekTechTogetherFellowshipProgramsFellowship FAQApplyResourcesCode of ConductPrizes & FreebiesBranding GuidelinesAbout MLHContact UsBlogPartnersWork at MLHPrivacyTerms of ServiceMajor League Hacking © 2026
+
+
+

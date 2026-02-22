@@ -9,6 +9,8 @@ interface CircularProgressBarProps {
   text?: string
   textColor?: string
   fontSize?: number
+  imageUrl?: string
+  imageSize?: number
 }
 
 export const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
@@ -20,14 +22,25 @@ export const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
   text = `${Math.round(progress)}%`,
   textColor = '#1f2937',
   fontSize = 24,
+  imageUrl,
+  imageSize,
 }) => {
   const radius = (size - strokeWidth) / 2
   const circumference = 2 * Math.PI * radius
   const offset = circumference - (progress / 100) * circumference
+  const innerSize = imageSize ?? Math.max(0, size - strokeWidth * 2)
+  const imageX = (size - innerSize) / 2
+  const imageY = (size - innerSize) / 2
+  const clipId = `cpb-clip-${Math.round(size)}-${Math.round(strokeWidth)}`
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <svg width={size} height={size} style={{ position: 'relative' }}>
+        <defs>
+          <clipPath id={clipId}>
+            <circle cx={size / 2} cy={size / 2} r={radius - strokeWidth / 2} />
+          </clipPath>
+        </defs>
         {/* Background circle */}
         <circle
           cx={size / 2}
@@ -55,6 +68,18 @@ export const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
             transformOrigin: `${size / 2}px ${size / 2}px`,
           }}
         />
+
+        {imageUrl && (
+          <image
+            href={imageUrl}
+            x={imageX}
+            y={imageY}
+            width={innerSize}
+            height={innerSize}
+            preserveAspectRatio="xMidYMid slice"
+            clipPath={`url(#${clipId})`}
+          />
+        )}
         
         {/* Center text */}
         <text
