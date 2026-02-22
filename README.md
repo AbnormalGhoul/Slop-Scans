@@ -1,42 +1,10 @@
-# SLOP SCAN
+# Slop-Scans
+## Members
+### Crimson Code 2026, Team SLOP
+- **Itay Shemesh**
+- **Khoa Ta**
+- **Quinn McCarthy**
+## Overview
+We have developed a chrome extension that detects if there is any AI generated content on a webpage. We base our overall presentage on both the image(s) and text in said wepage. The overall AI content precentage is calculated by taking the average of the AI text detected prescentage and the image AI precentage, if there are no images on the webpage then it will only base itself off of the text. The image transcription ignores all Ads placed onto a website.
 
-## Setup (./setup.sh)
-```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install --upgrade pip
-pip install -r requirements.txt
-python -c "import nltk; nltk.download('punkt')"
-```
-
-## .env file
-Create a `.env` file in the project root:
-```env
-APP_NAME=AI Content Detection API
-APP_ENV=development
-DEBUG=True
-
-TEXT_MODEL_NAME=SzegedAI/AI_Detector
-IMAGE_MODEL_NAME=facebook/dino-vits16
-
-TEXT_AI_THRESHOLD=0.5
-IMAGE_AI_THRESHOLD=0.5
-
-MAX_TEXT_LENGTH=512
-```
-
-## Run the Server (./start.sh)
-```bash
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-```
-Server should start at:
-```
-http://localhost:8000
-http://localhost:8000/docs
-```
-
-## Notes
-- Models will download automatically on first run.
-- First startup may take time due to model loading.
-- For GPU support, install the CUDA-enabled version of PyTorch.
-- For best performance in WSL, keep the project inside the Linux filesystem (not `/mnt/c`).
+Users will simply click the extension to open up the Slop Detector Pannel.
