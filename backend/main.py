@@ -5,6 +5,8 @@ from pathlib import Path
 import io
 import glob
 import os
+from typing import Optional
+
 
 import uvicorn
 
@@ -24,6 +26,7 @@ class PageRequest(BaseModel):
 
 class DetectionResult(BaseModel):
     percentage: float
+    ai_phrases: Optional[str] = None
 
 @app.get("/")
 def root():
@@ -31,8 +34,8 @@ def root():
 
 @app.post("/detect/page", response_model=DetectionResult)
 def detect_page(request: PageRequest):
-    percentage = run_detector(request.url)
-    return DetectionResult(percentage=percentage)
+    result = run_detector(request.url)
+    return result
 
 @app.post("/detect/text")
 def detect_text(request: TextRequest):
