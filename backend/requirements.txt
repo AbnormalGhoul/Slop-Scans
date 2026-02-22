@@ -12,4 +12,15 @@ requests>=2.31.0
 numpy>=1.24.4
 scipy>=1.10.1
 opencv-python>=4.9.0.80
+streamlit
+langchain
+langchain_ollama
+selenium
+beautifulsoup4
+lxml
+html5lib
+python-dotenv
+pillow
+piexif
+exifread
 python-multipart>=0.0.6
