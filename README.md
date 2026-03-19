@@ -1,7 +1,7 @@
 # Slop-Scans
 ## Members
 ### Crimson Code 2026, Team SLOP
-- **Itay Shemesh**
+- **Abnormal Ghoul**
 - **Khoa Ta**
 - **Quinn McCarthy**
 ## Overview
